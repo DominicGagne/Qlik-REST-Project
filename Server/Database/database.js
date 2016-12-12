@@ -25,15 +25,13 @@ var databaseModule = function(mysql) {
     self.acquireConnection = function() {
         connection.connect(function(err) {
             if(err) {
-                console.log("Could not connect to db!");
-            } else {
-                //'connection' object is now active.
-                console.log("Connected to the database.");
+                console.log("Could not connect to database, exiting.");
+                process.exit(0);
             }
         });    
     };
 
-
+    
     self.fetchAll = function(queryString, args, callback) {
         connection.query(queryString, args, function(err, rows, fields) {
             if(err) throw err;
