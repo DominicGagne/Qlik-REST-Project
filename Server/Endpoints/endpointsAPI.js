@@ -3,6 +3,10 @@
 //local strategy in order to gain access to those routes.
 
 var endpointsAPI  = function(app, database, rootDir) {
+
+    var palindromeFile = require('../HelperModules/palindromeModule.js');
+    var palindromeModule = new palindromeFile();
+    console.log(palindromeModule.isPalindrome);
          
     app.get('/', function (req, res) {
         res.sendFile(rootDir + '../Public/index.html');
@@ -112,6 +116,35 @@ var endpointsAPI  = function(app, database, rootDir) {
                 return res.status(200).send();
             } else {
                 return res.status(404).send("Could not find a message with that MessageID");
+            }
+        }
+    });
+
+
+    /**
+     * [API endpoint for GET /messages/messageID/palindrome.]
+     * Params: The MessageID of the message to evaluate as a palindrome.
+     * @return {[HTTP 200 on success, HTTP 400 on badly submitted MessageID, and HTTP 404 on no MessageID found.]}
+     */
+    app.get('/messages/:messageID/palindrome', function(req, res) {
+        //regex to match a string that only contains digits. Will immediately filter out bad/malicious input.
+        if(req.params.messageID.match(/^([0-9]+)$/)) {
+            database.fetchFirst("SELECT * FROM Message WHERE MessageID = ?", [req.params.messageID], messageFetchCallback);
+        } else {
+            //badly formed request.
+            return res.status(400).send();
+        }
+
+        /**
+        * [Callback function for confirmation of message retrieval.]
+        * Params: Error flag from database, the contents of the record fetched.
+        * @return {[HTTP 200 on success, HTTP 404 on no MessageID found.]}
+        */
+        function messageFetchCallback(err, messageRecord) {
+            if(err || ! messageRecord) {
+                return res.status(404).send("Could not find a message with that MessageID.");
+            } else {
+                return res.status(200).send(palindromeModule.isPalindrome(messageRecord.Contents));
             }
         }
     });
