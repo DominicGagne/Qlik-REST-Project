@@ -8,6 +8,12 @@ var endpointsAPI  = function(app, database, rootDir) {
         res.sendFile(rootDir + '../Public/index.html');
     });   
 
+
+    /**
+     * [API endpoint for POST /message.]
+     * Params: Body must contain two strings, 'username' and 'message'.
+     * @return {[HTTP 200 on success, HTTP 400 on bad fields, HTTP 503 on database failure.]}
+     */
     app.post('/message', function (req, res) {
         if(! req.body.username || ! req.body.message) {
             return res.status(400).send("Badly formatted request. Missing username or message.");
@@ -16,6 +22,11 @@ var endpointsAPI  = function(app, database, rootDir) {
             database.insertOrUpdate("INSERT INTO Message (UserID, Contents) VALUES ((SELECT UserID FROM User WHERE Username = ?),?)", [req.body.username, req.body.message], onMessageCallback);
         }  
 
+        /**
+        * [Callback function for initial message insert.]
+        * Params: Error flag from database, insertID of successfully inserted message.
+        * @return {[HTTP 200 on success.]}
+        */
         function onMessageCallback(err, insertID) {
             if(err) {
                 console.log("User does not yet exist.");
@@ -26,6 +37,11 @@ var endpointsAPI  = function(app, database, rootDir) {
             }
         }
 
+        /**
+        * [Callback function for new user insert.]
+        * Params: Error flag from database, insertID of successfully inserted User.
+        * @return {[HTTP 503 on database failure.]}
+        */
         function onNewUserCallback(err, insertID) {
             if(err) {
                 return res.status(503).send("Unable to insert new user information.");
@@ -34,6 +50,11 @@ var endpointsAPI  = function(app, database, rootDir) {
             }
         }
 
+        /**
+        * [Callback function for message insert after a user has been created. TODO: is this function now redundant?]
+        * Params: Error flag from database, insertID of successfilly inserted message.
+        * @return {[HTTP 200 on success, HTTP 503 on database failure.]}
+        */
         function onNewUserMessageInsert(err, insertID) {
             if(err) {
                 return res.status(503).send("Unable to insert new user message.");
