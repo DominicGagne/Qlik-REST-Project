@@ -71,7 +71,7 @@ var endpointsAPI  = function(app, database, rootDir) {
      * @return {[HTTP 200 on success, along with array of all message objects. HTTP 503 on database failure.]}
      */
     app.get('/messages', function (req, res) {
-        database.fetchAll("SELECT Message.Contents AS Msg, Message.UpdateTime AS Time, User.Username AS Author FROM Message INNER JOIN User ON Message.UserID = User.UserID", [], onAllMessages);
+        database.fetchAll("SELECT Message.MessageID, Message.Contents AS Msg, Message.UpdateTime AS Time, User.Username AS Author FROM Message INNER JOIN User ON Message.UserID = User.UserID", [], onAllMessages);
     
         /**
         * [Callback function for retrieval of all messages in the database.]
