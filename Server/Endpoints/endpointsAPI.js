@@ -17,6 +17,6 @@ var endpointsAPI  = function(app, database, rootDir) {
         }
     }); 
 };
-
+ 
 //allow this entire file  to be exported to application.js 
 module.exports = endpointsAPI;
