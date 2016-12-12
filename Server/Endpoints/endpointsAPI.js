@@ -10,11 +10,11 @@ var endpointsAPI  = function(app, database, rootDir) {
 
 
     /**
-     * [API endpoint for POST /message.]
+     * [API endpoint for POST /messages.]
      * Params: Body must contain two strings, 'username' and 'message'.
      * @return {[HTTP 200 on success, HTTP 400 on bad fields, HTTP 503 on database failure.]}
      */
-    app.post('/message', function (req, res) {
+    app.post('/messages', function (req, res) {
         if(! req.body.username || ! req.body.message) {
             return res.status(400).send("Badly formatted request. Missing username or message.");
         } else {
@@ -52,7 +52,7 @@ var endpointsAPI  = function(app, database, rootDir) {
 
         /**
         * [Callback function for message insert after a user has been created. TODO: is this function now redundant?]
-        * Params: Error flag from database, insertID of successfilly inserted message.
+        * Params: Error flag from database, insertID of successfully inserted message.
         * @return {[HTTP 200 on success, HTTP 503 on database failure.]}
         */
         function onNewUserMessageInsert(err, insertID) {
@@ -65,6 +65,27 @@ var endpointsAPI  = function(app, database, rootDir) {
     });
 
 
+    /**
+     * [API endpoint for GET /messages.]
+     * Params: None.
+     * @return {[HTTP 200 on success, along with array of all message objects. HTTP 503 on database failure.]}
+     */
+    app.get('/messages', function (req, res) {
+        database.fetchAll("SELECT Message.Contents AS Msg, Message.UpdateTime AS Time, User.Username AS Author FROM Message INNER JOIN User ON Message.UserID = User.UserID", [], onAllMessages);
+    
+        /**
+        * [Callback function for retrieval of all messages in the database.]
+        * Params: Error flag from database, array of all messages in the database.
+        * @return {[HTTP 200 on success, HTTP 503 on database failure.]}
+        */
+        function onAllMessages(err, allMessages) {
+            if(err) {
+                return res.status(503).send("Unable to retrieve messages from database.");
+            } else {
+                return res.status(200).send(allMessages);
+            }
+        }
+    });
 
     
 };
