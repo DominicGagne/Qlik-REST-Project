@@ -129,10 +129,10 @@ var endpointsAPI  = function(app, database, rootDir) {
         }
 
         function messageFetchCallback(err, messageRecord) {
-            if(err) {
+            if(err || ! messageRecord.Contents) {
                 return res.status(404).send("Could not find a message with that MessageID.");
             } else {
-                //isPalindrome
+                return res.status(200).send(palindromeModule.isPalindrome(messageRecord.Contents));
             }
         }
     });
