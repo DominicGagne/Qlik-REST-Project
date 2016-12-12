@@ -87,6 +87,22 @@ var endpointsAPI  = function(app, database, rootDir) {
         }
     });
 
+
+    app.delete('/messages/:messageID', function (req, res) {
+        //regex to match a string that only contains digits. Will immediately filter out bad/malicious input.
+        if(req.params.messageID.match(/^([0-9]+)$/)) {
+            database.insertOrUpdate("DELETE FROM Message WHERE MessageID = ?", [req.params.messageID], onDeleteCallback);
+        } else {
+            //badly formed request.
+            return res.status(400).send();
+        }
+
+        function onDeleteCallback(err, insertID) {
+            console.log("err: ", err, " insertID: ", insertID);
+            return res.status(200).send();
+        }
+    });
+
     
 };
 
