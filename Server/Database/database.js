@@ -18,9 +18,10 @@ var databaseModule = function(mysql) {
     });  
 
     /**
-     * [Acquires a connection to the database.]
-     * @return {[None.]} ['connection' object will be able to interact with
+     * [Acquires a connection to the database.'connection' object will be able to interact with
      * the database if this function succeeds.]
+     * Params: None.
+     * @return {[None.]}
      */
     self.acquireConnection = function() {
         connection.connect(function(err) {
@@ -31,31 +32,48 @@ var databaseModule = function(mysql) {
         });    
     };
 
-    
+    /**
+     * [Fetches all rows matching a particular query.]
+     * Params: Query string for the database, array of arguments for the database, callback function.
+     * @return {[An array containing the matched records]} 
+     */
     self.fetchAll = function(queryString, args, callback) {
         connection.query(queryString, args, function(err, rows, fields) {
-            if(err) throw err;
-            callback(rows);
+            if(err) {
+                callback(err, null);
+            } else {
+                callback(false, rows);
+            }
         });
     };
 
-
+    /**
+     * [Fetches the first row matching a particular query.]
+     * Params: Query string for the database, array of arguments for the database, callback function.
+     * @return {[An array containing the matched records on success, null on failure.]} 
+     */
     self.fetchFirst = function(queryString, args, callback) {
         connection.query(queryString, args, function(err, rows, fields) {
-            if(err) throw err;
-            callback(rows[0]);
+            if(err) {
+                callback(err, null);
+            } else {
+                //success
+                callback(false, rows[0]);
+            }
         });
     };
 
-
+    /**
+     * [Performs an insert or update on the database.]
+     * Params: Query string for the database, array of arguments for the database, callback function.
+     * @return {[InsertID of inserted or updated row on success, null on failure.]} 
+     */
     self.insertOrUpdate = function(queryString, args, callback) {
-        console.log("QUERY " + queryString);
         connection.query(queryString, args, function(err, rows, fields) {
             if(err) {
                 //throw error, callback will see insert or update failed.
                 callback(err, null);
             } else {
-                console.log("Updated ID: " + JSON.stringify(rows.insertId));
                 //no error, do not set error flag.
                 callback(false, rows.insertId);
             }
