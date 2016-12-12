@@ -80,6 +80,22 @@ var databaseModule = function(mysql) {
         });
     };
 
+    /**
+     * [Performs a query on the database, and returns the number of affected rows. Well suited for deleting.]
+     * Params: Query string for the database, array of arguments for the database, callback function.
+     * @return {[The number of affected rows on success, null on failure.]} 
+     */
+    self.delete = function(queryString, args, callback) {
+        connection.query(queryString, args, function(err, rows, fields) {
+            if(err) {
+                callback(err, null);
+            } else {
+                //success, return number of rows affected.
+                callback(false, rows.affectedRows);
+            }
+        })
+    }
+
 
     console.log("done.");
 };

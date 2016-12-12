@@ -87,6 +87,35 @@ var endpointsAPI  = function(app, database, rootDir) {
         }
     });
 
+
+    /**
+     * [API endpoint for DELETE /messages.]
+     * Params: The MessageID of the message to delete.
+     * @return {[HTTP 200 on success, HTTP 400 on badly submitted MessageID, and HTTP 404 on no MessageID found.]}
+     */
+    app.delete('/messages/:messageID', function (req, res) {
+        //regex to match a string that only contains digits. Will immediately filter out bad/malicious input.
+        if(req.params.messageID.match(/^([0-9]+)$/)) {
+            database.delete("DELETE FROM Message WHERE MessageID = ?", [req.params.messageID], onDeleteCallback);
+        } else {
+            //badly formed request.
+            return res.status(400).send();
+        }
+
+        /**
+        * [Callback function for confirmation of message deletion success.]
+        * Params: Error flag from database, number of rows affected by query.
+        * @return {[HTTP 200 on success, HTTP 404 on no MessageID found.]}
+        */
+        function onDeleteCallback(err, rowsAffected) {
+            if(rowsAffected > 0) {
+                return res.status(200).send();
+            } else {
+                return res.status(404).send("Could not find a message with that MessageID");
+            }
+        }
+    });
+
     
 };
 
