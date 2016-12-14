@@ -38,7 +38,8 @@ var endpointsAPI  = function(app, database, rootDir) {
                 database.insertOrUpdate("INSERT INTO User (Username) VALUES (?)", [req.body.username], onNewUserCallback);
             } else {
                 //User existed, success.
-                return res.status(200).send(insertID);
+                res.json({"msgID":insertID});
+                return res.status(200).send();
             }
         }
 
@@ -64,7 +65,8 @@ var endpointsAPI  = function(app, database, rootDir) {
             if(err) {
                 return res.status(503).send("Unable to insert new user message.");
             } else {
-                return res.status(200).send(insertID);
+                res.json({"msgID":insertID});
+                return res.status(200).send();
             }
         }
     });
