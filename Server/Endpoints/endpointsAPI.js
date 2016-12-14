@@ -8,7 +8,6 @@ var endpointsAPI  = function(app, database, rootDir) {
 
     var palindromeFile = require('../HelperModules/palindromeModule.js');
     var palindromeModule = new palindromeFile();
-    console.log(palindromeModule.isPalindrome);
          
     app.get('/', function (req, res) {
         res.sendFile(path.resolve('../Public/index.html'));
@@ -35,11 +34,11 @@ var endpointsAPI  = function(app, database, rootDir) {
         */
         function onMessageCallback(err, insertID) {
             if(err) {
-                console.log("User does not yet exist.");
+                //User does not yet exist.
                 database.insertOrUpdate("INSERT INTO User (Username) VALUES (?)", [req.body.username], onNewUserCallback);
             } else {
-                console.log("User existed, success.");
-                return res.status(200).send();
+                //User existed, success.
+                return res.status(200).send(insertID);
             }
         }
 
@@ -65,7 +64,7 @@ var endpointsAPI  = function(app, database, rootDir) {
             if(err) {
                 return res.status(503).send("Unable to insert new user message.");
             } else {
-                return res.status(200).send();
+                return res.status(200).send(insertID);
             }
         }
     });
