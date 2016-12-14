@@ -5,6 +5,15 @@ var server = supertest.agent("http://localhost:3000");
 
 console.log("\n\nQlik Audition Project Unit Tests");
 
+
+//really not sure this global is the best way to do this...
+//I believe a more correct solution would be to use
+//the 'beforeEach' method provided by Mocha.
+var notPalindrome;
+var isPalindrome;
+
+
+
 describe("GET /",function(){
 
     it("should return home page",function(done){
@@ -33,6 +42,7 @@ describe("GET /",function(){
 
 
 
+
 describe("POST /messages",function(){
 
     it("should create a single message",function(done){
@@ -43,6 +53,24 @@ describe("POST /messages",function(){
         .expect(200) 
         .end(function(err,res){
             res.status.should.equal(200);
+            res.body.should.have.property("msgID");
+                notPalindrome = res.body.msgID;
+
+            done();
+        });
+    });
+
+    it("should create a single message - palindrome",function(done){
+        server
+        .post("/messages")
+        .send({"username": "dom", "message":"hello there Qlik! !kilQ ereht olleh"})
+        .expect("Content-type",/json/)
+        .expect(200) 
+        .end(function(err,res){
+            res.status.should.equal(200);
+            res.body.should.have.property("msgID");
+                isPalindrome = res.body.msgID;
+
             done();
         });
     });
@@ -97,6 +125,7 @@ describe("POST /messages",function(){
 
 
 
+
 describe("GET /messages",function(){
 
     it("should return a list of all messages as JSON array",function(done){
@@ -106,7 +135,6 @@ describe("GET /messages",function(){
         .expect(200) 
         .end(function(err,res){
             res.status.should.equal(200);
-            //res.body.should.have.property();
             res.body.should.be.instanceOf(Array);
             done();
         });
@@ -116,11 +144,12 @@ describe("GET /messages",function(){
 
 
 
+
 describe("GET /messages/messageid/palindrome",function(){
 
     it("should tell client the message is a palindrome",function(done){
         server
-        .get("/messages/17/palindrome")
+        .get("/messages/" + isPalindrome + "/palindrome")
         .expect("Content-type",/json/)
         .expect(200) 
         .end(function(err,res){
@@ -132,7 +161,7 @@ describe("GET /messages/messageid/palindrome",function(){
 
     it("should tell client the message is not a palindrome",function(done){
         server
-        .get("/messages/18/palindrome")
+        .get("/messages/" + notPalindrome + "/palindrome")
         .expect("Content-type",/json/)
         .expect(200) 
         .end(function(err,res){
@@ -158,27 +187,33 @@ describe("GET /messages/messageid/palindrome",function(){
 
 
 
-/*
+describe("DELETE /messages/messageid",function(){
 
 
-
-
-  it("should return 400 bad request",function(done){
-
-    server
-    .delete("/messages/-1")
-    .expect("Content-type",/json/)
-    .expect(400) 
-    .end(function(err,res){
-      res.status.should.equal(400);
-      done();
+    it("should delete a single message",function(done){
+        server
+        .del("/messages/" + isPalindrome)
+        .expect("Content-type",/json/)
+        .expect(200) 
+        .end(function(err,res){
+            res.status.should.equal(200);
+            done();
+        });
     });
-  });
-*/
 
+    //not sure this global variable solution is wise, need to look into a better solution.
+    it("should delete a single message - second",function(done){
+        server
+        .del("/messages/" + notPalindrome)
+        .expect("Content-type",/json/)
+        .expect(200) 
+        .end(function(err,res){
+            res.status.should.equal(200);
+            done();
+        });
+    });
 
-
-
+});
 
 
 
