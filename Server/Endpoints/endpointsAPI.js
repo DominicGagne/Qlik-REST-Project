@@ -4,12 +4,14 @@
 
 var endpointsAPI  = function(app, database, rootDir) {
 
+    var path = require('path');
+
     var palindromeFile = require('../HelperModules/palindromeModule.js');
     var palindromeModule = new palindromeFile();
     console.log(palindromeModule.isPalindrome);
          
     app.get('/', function (req, res) {
-        res.sendFile(rootDir + '../Public/index.html');
+        res.sendFile(path.resolve('../Public/index.html'));
     });   
 
 
