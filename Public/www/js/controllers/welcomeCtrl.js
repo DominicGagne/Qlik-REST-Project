@@ -6,6 +6,7 @@ var QlikAudition = angular.module('QlikAudition.controllers',[])
     $scope.selectedIndex = 0;
     $scope.messages = [];
     $scope.highlightedMsg = -1;
+    $scope.highlightedIsPalindrome = false;
 
     $scope.submitUsername = function() {
         $scope.selectedIndex++;
@@ -28,8 +29,9 @@ var QlikAudition = angular.module('QlikAudition.controllers',[])
         $scope.highlightedMsg = -1;
     }
 
-    $scope.moreInfo = function(index) {
+    $scope.moreInfo = function(index, messageID) {
         $scope.highlightedMsg = index;
+        $http.get('/messages/' + messageID + '/palindrome').then(palindromeSuccess, palindromeFail);
     }
 
     function postMessageSuccess(serverResponse) {
@@ -46,6 +48,16 @@ var QlikAudition = angular.module('QlikAudition.controllers',[])
         console.log("fail");
     }
 
+    function palindromeSuccess(serverResponse) {
+        console.log("success.");
+        $scope.highlightedIsPalindrome = serverResponse.data;
+    }
+
+    function palindromeFail(serverResponse) {
+        //TODO: handle this error
+        console.log("fail.");
+    }
+
     function messageDeleteSuccess(serverResponse) {
         console.log("success.");
         $scope.getMessages();
@@ -59,6 +71,7 @@ var QlikAudition = angular.module('QlikAudition.controllers',[])
     function getMessagesSuccess(serverResponse) {
         console.log("success.");
         $scope.messages = serverResponse.data;
+        $scope.highlightedMsg = -1;
         console.log("messages: ", $scope.messages);
     }
 
