@@ -19,6 +19,9 @@
 -- Table structure for table `Message`
 --
 
+CREATE DATABASE QlikAudition;
+USE QlikAudition;
+
 DROP TABLE IF EXISTS `Message`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
