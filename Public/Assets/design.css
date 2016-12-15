@@ -1,0 +1,53 @@
+.mainInputBlock {
+	font-size: 1em;
+	width:50%;
+}
+
+.footer {
+	position: absolute;
+	bottom: 1vh;
+	width: 40vw;
+	left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mainInputField {
+	text-align: center;
+}
+
+.wideInputBlock {
+	font-size: 1em;
+	width:70%;
+}
+
+.wideInputField {
+	text-align: center;
+}
+
+
+.primaryTab {
+	height: 100vh;
+
+}
+
+md-tabs md-ink-bar {
+    color: green;
+    background-color:green;
+}
+
+.projectInfo {
+    margin-top: 20vh;
+}
+
+.messageList {
+	width: 80%;
+}
+
+.horizontalDivider {
+	height: 0.5vh;
+	color:green;
+	background-color:green;
+	border:none;
+}

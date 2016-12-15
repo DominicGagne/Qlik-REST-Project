@@ -1,0 +1,100 @@
+<html> 
+<ng-app="QlikAudition">
+    <head>
+        <title>Qlik</title>
+    </head>
+    <body>
+
+         <md-tabs md-stretch-tabs="always" md-dynamic-height md-border-bottom md-center-tabs="true" md-selected="selectedIndex">
+            <md-tab label="Welcome">
+                <md-content class="primaryTab">
+                <div layout="row">
+                    <div flex="60" flex-offset="20">
+                        <center>
+                            <h2>Qlik Audition Project</h2>
+                            <p>This is my Audition Project for <b>Qlik Ottawa</b>.<br><br>
+                            It is running on a <b>MEAN</b> stack.<br><br>
+                            </p>
+                            <hr class="horizontalDivider">
+                            <br>
+                            <h4>Please choose a username to proceed.</h4>
+
+                            <form name="usernameForm" ng-submit="submitUsername()">
+                                <md-input-container  md-no-float class="md-block mainInputBlock" flex-gt-sm>
+                                    <input class="mainInputField" ng-maxlength="20" onfocus="this.placeholder=''" onblur="this.placeholder='Username'" placeholder="Username" ng-model="username" autocomplete="off">
+                                    <br>
+                                </md-input-container>
+                            </form>
+                            <md-button type="submit" ng-click="submitUsername()" ng-disabled="! username.length" class="md-raised md-primary">Next</md-button>
+                        </center>
+                    </div>
+                </div>
+                <div class="footer">
+                    <center>
+                        <p>The source code for this webapp is available at: </p>
+                        <h4>https://github.com/DominicGagne/Qlik-REST-Project</h4> <br>
+                        <h3>Created by Dominic Gagné.</h3>
+                    </center>
+                </div>
+                </md-content>
+            </md-tab>
+
+            <md-tab label="REST API" ng-disabled="! username.length">
+                <md-content class="primaryTab">
+                <center>
+                    <h2>
+                        REST API DEMO
+                    </h2>
+                    <p>Posting as <b>{{username}}.</b></p>
+                </center>
+                    <div layout="row">
+                        <div flex="50">
+                            <center>
+                                <h3>Send a message</h3>
+                                <form name="messageForm" ng-submit="submitMessage()">
+                                    <md-input-container  md-no-float class="md-block wideInputBlock" flex-gt-sm>
+                                        <input class="wideInputField" ng-maxlength="160" onfocus="this.placeholder=''" onblur="this.placeholder='Your message'" placeholder="Your message" ng-model="message" autocomplete="off">
+                                        <br>
+                                    </md-input-container>
+                                </form>
+                                <md-button type="submit" ng-click="submitMessage()" ng-disabled="! message.length" class="md-raised md-primary">Submit</md-button>
+                            <center>
+                            <div class="projectInfo">
+                                <center>
+                                    <p>The source code for this webapp is available at: </p>
+                                    <h4>https://github.com/DominicGagne/Qlik-REST-Project</h4> <br>
+                                    <h3>Created by Dominic Gagné.</h3>
+                                </center>
+                            </div>
+                        </div>
+                        <div flex="50">
+                            <center><h3>Messages</h3><h5>Click a message for more details.</h5>
+                                <md-button ng-click="getMessages()" class="md-raised md-primary">Refresh</md-button>
+                                <md-list class="messageList">
+                                    <md-list-item class="md-2-line" ng-click="moreInfo($index)" ng-repeat="message in messages | orderBy : '-Time'">
+                                        <div class="md-list-item-text" ng-class="{'md-offset': phone.options.offset }">
+                                            <h3>{{message.Msg}}</h3>
+                                            <p ng-show="highlightedMsg == $index">Posted by <b>{{message.Author}}</b> on {{message.Time | date:'medium'}}</p>
+                                        </div>
+                                        <md-button ng-show="highlightedMsg == $index" ng-click="deleteMessage(message.MessageID)" class="md-accent">Delete</md-button>
+                                        <md-divider ></md-divider>
+                                    </md-list-item>
+                                </md-list>
+                            </center>
+                        </div>
+                    </div>
+
+                </md-content>
+            </md-tab>
+        </md-tabs>
+
+
+
+        
+    </body>
+</html>
+
+
+
+
+
