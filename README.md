@@ -38,12 +38,6 @@ The project is now ready to run! Type:
 
 I had planned on using Docker to deploy this app, but ran short on time.  Perhaps in the future.
 
-## Testing
-I used Mocha and Supertest to test this API.  The testing script can be found at `Test/supertest.js`
-The testing suite is comprised of 16 different tests, which are outlined below:
-
-image here
-
 ## REST API Documentation
 
 ### POST /messages
@@ -61,4 +55,10 @@ Return: HTTP 200 on success, HTTP 400 on badly submitted MessageID, and HTTP 404
 ### GET /messages/messageid/palindrome
 Params: The MessageID of the message to evaluate as a palindrome.
 Return: HTTP 200 on success, HTTP 400 on badly submitted MessageID, and HTTP 404 on no MessageID found.
+
+## Testing
+I used Mocha and Supertest to test this API.  The testing script can be found at `Test/supertest.js`
+The testing suite is comprised of 16 different tests, which are outlined below:
+
+![alt text](https://github.com/DominicGagne/Qlik-REST-Project/blob/master/Test/Screen%20Shot%202016-12-15%20at%201.08.57%20AM.png "Mocha")
 
