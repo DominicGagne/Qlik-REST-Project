@@ -7,7 +7,7 @@ var databaseModule = function(mysql) {
     var fs = require('fs'), ini = require('ini');
 
     //parse our databse configuration file.
-    var config = ini.parse(fs.readFileSync('./Config/config.ini', 'utf-8'));
+    var config = ini.parse(fs.readFileSync('./Server/Config/config.ini', 'utf-8'));
     
     //config object for the database.
     var connection = mysql.createConnection({

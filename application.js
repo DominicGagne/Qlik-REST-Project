@@ -16,17 +16,17 @@ var app = express();
 app.use('/', express.static(__dirname + '/'));
 
 
-//what is this? is it really needed for parsing?
+//what is this being used for? is it really needed for parsing?
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({limit: "5mb", extended: true, parameterLimit:5000}));
 
 //load the database module, and allow for connections to be made from the server side code.
-var databaseModule = require('./Database/database.js');
+var databaseModule = require('./Server/Database/database.js');
 var database = new databaseModule(mysql);
 database.acquireConnection();
 
 //load and initialize our endpoints module for the API
-var endspointsAPIMoule = require('./Endpoints/endpointsAPI.js');
+var endspointsAPIMoule = require('./Server/Endpoints/endpointsAPI.js');
 var endspointsAPI = new endspointsAPIMoule(app, database, __dirname);
 
 

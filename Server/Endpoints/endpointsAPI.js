@@ -10,7 +10,7 @@ var endpointsAPI  = function(app, database, rootDir) {
     var palindromeModule = new palindromeFile();
          
     app.get('/', function (req, res) {
-        res.sendFile(path.resolve('../Public/index.html'));
+        res.sendFile(path.resolve('./Public/www/index.html'));
     });   
 
 
