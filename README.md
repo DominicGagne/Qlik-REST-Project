@@ -42,11 +42,11 @@ I had planned on using Docker to deploy this app, but ran short on time.  Perhap
 
 ### POST /messages
 Params: Body must contain two strings, 'username' and 'message'.
-Return: HTTP 200 on success, HTTP 400 on bad fields, HTTP 503 on database failure.
+Return: HTTP 200 on success, HTTP 400 on bad fields, HTTP 503 on database failure.  Returns Object containing ID of the new message in the following format: {"msgID":"1"}
 
 ### GET /messages
 Params: None.
-Return: HTTP 200 on success, along with array of all message objects. HTTP 503 on database failure.
+Return: HTTP 200 on success, along with array of all message objects, contained in the response body. HTTP 503 on database failure.
 
 ### DELETE /messages/messageid
 Params: The MessageID of the message to delete.
@@ -54,7 +54,7 @@ Return: HTTP 200 on success, HTTP 400 on badly submitted MessageID, and HTTP 404
 
 ### GET /messages/messageid/palindrome
 Params: The MessageID of the message to evaluate as a palindrome.
-Return: HTTP 200 on success, HTTP 400 on badly submitted MessageID, and HTTP 404 on no MessageID found.
+Return: HTTP 200 on success, HTTP 400 on badly submitted MessageID, and HTTP 404 on no MessageID found. On success, the response body contains the boolean value true if the message is a palindrome, or false if it is not.
 
 ## Testing
 I used Mocha and Supertest to test this API.  The testing script can be found at `Test/supertest.js`
