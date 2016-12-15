@@ -58,6 +58,11 @@
                                     </md-input-container>
                                 </form>
                                 <md-button type="submit" ng-click="submitMessage()" ng-disabled="! message.length" class="md-raised md-primary">Submit</md-button>
+                                <br><br>
+                                <div ng-show="highlightedMsg != -1">
+                                    <p ng-show="highlightedIsPalindrome">The highlighted message <b>is</b> a palindrome!</p>
+                                    <p ng-show="! highlightedIsPalindrome">The highlighted message is <b>not</b> a palindrome.</p>
+                                </div>
                             <center>
                             <div class="projectInfo">
                                 <center>
@@ -71,7 +76,7 @@
                             <center><h3>Messages</h3><h5>Click a message for more details.</h5>
                                 <md-button ng-click="getMessages()" class="md-raised md-primary">Refresh</md-button>
                                 <md-list class="messageList">
-                                    <md-list-item class="md-2-line" ng-click="moreInfo($index)" ng-repeat="message in messages | orderBy : '-Time'">
+                                    <md-list-item class="md-2-line" ng-click="moreInfo($index, message.MessageID)" ng-repeat="message in messages | orderBy : '-Time'">
                                         <div class="md-list-item-text" ng-class="{'md-offset': phone.options.offset }">
                                             <h3>{{message.Msg}}</h3>
                                             <p ng-show="highlightedMsg == $index">Posted by <b>{{message.Author}}</b> on {{message.Time | date:'medium'}}</p>
